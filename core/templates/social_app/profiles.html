@@ -15,7 +15,7 @@
                             <div class="profile-picture-box">
                                 <figure class="profile-picture">
                                     <a href="profile.html">
-                                        <img src="{% static "social_app/images/profile/profile-1.jpg" %}" alt="profile picture">
+                                        <img src="{% static "social_app\images\profile\profile-1.jpg" %}" alt="profile picture">
                                     </a>
                                 </figure>
                             </div>
@@ -44,66 +44,66 @@
   </button>
   
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal start -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="signup-inner--form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="imageUpload">Upload profile image:</label>
+                            <input type="file" id="imageUpload" name="profile_picture" accept="image/*">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="single-field" placeholder="Email" name="username" value="{{ request.user.username }}">
+                        </div>
+                        <div class="col-6">
+                            <input type="email" class="single-field" placeholder="Email" name="email" value="{{ request.user.email }}">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="single-field" placeholder="First Name" name="first_name" value="{{ request.user.first_name }}">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="single-field" placeholder="Last Name" name="last_name" value="{{ request.user.last_name }}">
+                        </div>
+                        <div class="col-md-6">
+                            <select class="nice-select" name="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="nice-select" name="age">
+                                <option value="18+">18+</option>
+                                <option value="18-">18-</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <select class="nice-select" name="country">
+                                <option value="bangladesh">Bangladesh</option>
+                                <option value="australia">Australia</option>
+                                <option value="china">China</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="submit-btn">Update Profile</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-body">
-            <form class="signup-inner--form">
-                <div class="row">
-                    <div class="col-6">
-                        <input type="email" class="single-field" placeholder="Email">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="imageUpload">Upload profile image:</label>
-                        <input type="file" id="imageUpload" name="image" accept="image/*">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="single-field" placeholder="First Name">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="single-field" placeholder="Last Name">
-                    </div>
-                    <div class="col-md-6">
-                        <select class="nice-select" name="sortby">
-                            <option value="trending">Gender</option>
-                            <option value="sales">Male</option>
-                            <option value="sales">Female</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <select class="nice-select" name="sortby">
-                            <option value="trending">Age</option>
-                            <option value="sales">18+</option>
-                            <option value="sales">18-</option>
-                        </select>
-                    </div>
-                    <div class="col-12">
-                        <select class="nice-select" name="sortby">
-                            <option value="trending">Country</option>
-                            <option value="sales">Bangladesh</option>
-                            <option value="sales">Noakhali</option>
-                            <option value="sales">Australia</option>
-                            <option value="sales">China</option>
-                        </select>
-                    </div>
-                    <div class="col-12">
-                        <button class="submit-btn">Create Account</button>
-                    </div>
-                </div>
-                <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+<!-- Modal end -->
                             </div>
                         </div>
                     </div>
