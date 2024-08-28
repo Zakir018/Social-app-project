@@ -24,7 +24,7 @@
                                             " src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="cover photo">
                                         </a>
                                         <a href="{% url "profile" %}" class="profile-thumb-2">
-                                            <img   src="{{profile.profile_picture.url}}" alt="">
+                                            <img   src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="">
                                         </a>
                                     </figure>
                                     <div class="profile-desc text-center">
@@ -264,7 +264,6 @@
                             </div>
                         </div>
                         <!-- share box end -->
-                        {% for key, value in my_dict.items%}
                             <div class="card">
                                 <!-- post title start -->
                                 <div class="post-title d-flex align-items-center">
@@ -279,7 +278,7 @@
                                     <!-- profile picture end -->
 
                                     <div class="posted-author">
-                                        <h6 class="author"><a href="{% url "profile" %}">{{value}}</a></h6>
+                                        <h6 class="author"><a href="{% url "profile" %}"> {{request.user.profile.full_name}} </a></h6>
                                         <span class="post-time">20 min ago</span>
                                     </div>
 
@@ -333,7 +332,6 @@
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
                         <!-- post status start -->
                     </div>
 

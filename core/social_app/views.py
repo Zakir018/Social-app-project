@@ -9,19 +9,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @ login_required
 def index(request):
-    my_dict = {
-        'name1' : 'Zakir khan',
-        'name2' : 'Irshad Husian',
-        'name3' : 'Sohrab Khan',
-        'name4' : 'Khalid Ali Khan',
-        'name5' : 'Bilal Khan',
-        'name6' : 'Umair Khan',
-        'name7' : 'Omar Akhtar'
-    }
+    
     profile = Profile.objects.filter(user=request.user).first()
 
     context = {
-        'my-dict':my_dict,
         'profile':profile
     }
 
