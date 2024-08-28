@@ -18,14 +18,17 @@
                                 <div class="profile-banner">
                                     <figure class="profile-banner-small">
                                         <a href="{% url "profile" %}">
-                                            <img src="{% static "social_app/images/banner/banner-small.jpg" %}" alt="">
+                                            <img style="
+                                            height:100px;
+                                            width:400px;
+                                            " src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="cover photo">
                                         </a>
                                         <a href="{% url "profile" %}" class="profile-thumb-2">
-                                            <img src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="">
+                                            <img   src="{{profile.profile_picture.url}}" alt="">
                                         </a>
                                     </figure>
                                     <div class="profile-desc text-center">
-                                        <h6 class="author"><a href"{% url "profile" %}"> {{request.user.first_name}} {{request.user.last_name}} </a></h6>
+                                        <h6 class="author"><a href"{% url "profile" %}"> {{request.user.profile.full_name}}  </a></h6>
                                         <p>Any one can join with but Social network us if you want Any one can join with us if you want</p>
                                     </div>
                                 </div>
@@ -222,7 +225,7 @@
                                 <div class="profile-thumb">
                                     <a href="#">
                                         <figure class="profile-thumb-middle">
-                                            <img src="{% static "social_app/images/profile/profile-small-37.jpg" %}" alt="profile picture">
+                                            <img src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="profile picture">
                                         </figure>
                                     </a>
                                 </div>

@@ -15,10 +15,13 @@ class Profile(models.Model):
     gender = models.CharField(max_length=10)
     age = models.CharField(max_length=15)
     country = models.CharField(max_length=25)
-    profile_picture = models.ImageField(upload_to='profile-images/', null=True, blank=True)
+    profile_picture = models.ImageField(  null=True, blank=True, upload_to='profile-images/')
 
     def __str__(self):
         return self.first_name
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 

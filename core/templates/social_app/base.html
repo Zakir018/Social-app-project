@@ -247,13 +247,13 @@
                             <div class="profile-thumb-small">
                                 <a href="javascript:void(0)" class="profile-triger">
                                     <figure>
-                                        <img src="{% static "social_app/images/profile/profile-35x35-1.jpg" %} " alt="profile picture">
+                                        <img src="{% if profile.profile_picture %}{{profile.profile_picture.url}}{% endif %}" alt="profile picture">
                                     </figure>
                                 </a>
                                 <div class="profile-dropdown">
                                     <div class="profile-head">
-                                        <h5 class="name"><a href="{% url "profile" %}">{{request.user.first_name}} {{request.user.last_name}}</a></h5>
-                                        <a class="mail" href="{% url "profile" %}">{{request.user.email}}</a>
+                                        <h5 class="name"><a href="{% url "profile" %}">  {{request.user.profile.full_name}} </a></h5>
+                                        <a class="mail" href="{% url "profile" %}">{{request.user.profile.email}}</a>
                                     </div>
                                     <div class="profile-body">
                                         <ul>
@@ -361,7 +361,7 @@
                                 <div class="profile-thumb">
                                     <a href="profile.html">
                                         <figure class="profile-thumb-small profile-active">
-                                            <img src="social_app/images/profile/profile-35x35-13.jpg" alt="profile picture">
+                                            <img src="{% static "social_app/images/profile/profile-35x35-13.jpg" %}" alt="profile picture">
                                         </figure>
                                     </a>
                                 </div>
@@ -430,7 +430,7 @@
                 <div class="profile-thumb profile-setting-box">
                     <a href="javascript:void(0)" class="profile-triger">
                         <figure class="profile-thumb-middle">
-                            <img src="social_app/images/profile/profile-small-1.jpg" alt="profile picture">
+                            <img src="{% static "social_app/images/profile/profile-small-1.jpg" %}" alt="profile picture">
                         </figure>
                     </a>
                     <div class="profile-dropdown text-left">

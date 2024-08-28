@@ -18,10 +18,16 @@ def index(request):
         'name6' : 'Umair Khan',
         'name7' : 'Omar Akhtar'
     }
+    profile = Profile.objects.filter(user=request.user).first()
+
+    context = {
+        'my-dict':my_dict,
+        'profile':profile
+    }
 
         
     
-    return render(request, 'social_app/index.html', {'my_dict': my_dict})
+    return render(request, 'social_app/index.html',context)
 
 def signup(request):
     message = ''
@@ -118,7 +124,7 @@ def profile(request):
         profile_img = request.FILES.get('image')
 
         # Update the user's details
-        if profile.profile_picture:
+        if profile_img:
             profile.profile_picture = profile_img
         profile.first_name = new_first_name
         profile.last_name = new_last_name
