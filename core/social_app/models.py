@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser
+
 
 
 
@@ -15,7 +15,7 @@ class Profile(models.Model):
     gender = models.CharField(max_length=10)
     age = models.CharField(max_length=15)
     country = models.CharField(max_length=25)
-    profile_picture = models.ImageField(upload_to='profile-images/',)
+    profile_picture = models.ImageField(upload_to='profile-images/', null=True, blank=True)
 
     def __str__(self):
         return self.first_name

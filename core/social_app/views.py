@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from .models import Profile
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
+
 
 
 # Create your views here.
@@ -50,8 +50,6 @@ def signup(request):
 
         else:
             register_user = User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
                 username=username.lower(),
                 email=email,
                 password=password,
@@ -71,6 +69,7 @@ def signup(request):
             
 
     return render(request, 'social_app/signup.html', {'message':message})
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -107,29 +106,33 @@ def profile(request):
         'name6' : 'Umair Khan',
         'name7' : 'Omar Akhtar'
     }
+    profile = Profile.objects.filter(user=request.user).first()
 
     if request.method == 'POST':
         user = request.user
 
         # Get new values from POST request
-        new_username = request.POST.get('username')
         new_first_name = request.POST.get('first_name')
         new_last_name = request.POST.get('last_name')
         new_email = request.POST.get('email')
+        profile_img = request.FILES.get('image')
 
         # Update the user's details
-        if new_username:
-            user.username = new_username
-        if new_first_name:
-            user.first_name = new_first_name
-        if new_last_name:
-            user.last_name = new_last_name
-        if new_email:
-            user.email = new_email
-        user.save()
+        if profile.profile_picture:
+            profile.profile_picture = profile_img
+        profile.first_name = new_first_name
+        profile.last_name = new_last_name
+        profile.email = new_email
+        
+        profile.save()
+
+        context = {
+            'my_dict':my_dict,
+            'profile':profile
+        }
 
     
-    return render(request, 'social_app/profiles.html', {'my_dict': my_dict},)
+    return render(request, 'social_app/profiles.html', {'profile':profile})
 
     
 @login_required

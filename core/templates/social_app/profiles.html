@@ -15,7 +15,7 @@
                             <div class="profile-picture-box">
                                 <figure class="profile-picture">
                                     <a href="profile.html">
-                                        <img src="{% static "social_app\images\profile\profile-1.jpg" %}" alt="profile picture">
+                                        <img style="object-fit: cover; height:200px; width:200px;" src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="profile picture">
                                     </a>
                                 </figure>
                             </div>
@@ -56,21 +56,18 @@
                 <form class="signup-inner--form" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="imageUpload">Upload profile image:</label>
-                            <input type="file" id="imageUpload" name="profile_picture" accept="image/*">
+                            <input class="single-field form-control" type="file" id="imageUpload" name="image" accept="image/*">
                         </div>
                         <div class="col-6">
-                            <input type="text" class="single-field" placeholder="Email" name="username" value="{{ request.user.username }}">
-                        </div>
-                        <div class="col-6">
-                            <input type="email" class="single-field" placeholder="Email" name="email" value="{{ request.user.email }}">
+                            <input type="email" class="single-field" placeholder="Email" name="email" value="{{ request.user.profile.email }}">
                         </div>
                         <div class="col-md-6">
-                            <input type="text" class="single-field" placeholder="First Name" name="first_name" value="{{ request.user.first_name }}">
+                            <input type="text" class="single-field" placeholder="First Name" name="first_name" value="{{ request.user.profile.first_name }}">
                         </div>
                         <div class="col-md-6">
-                            <input type="text" class="single-field" placeholder="Last Name" name="last_name" value="{{ request.user.last_name }}">
+                            <input type="text" class="single-field" placeholder="Last Name" name="last_name" value="{{ request.user.profile.last_name }}">
                         </div>
                         <div class="col-md-6">
                             <select class="nice-select" name="gender">
@@ -115,7 +112,7 @@
                         <aside class="widget-area profile-sidebar">
                             <!-- widget single item start -->
                             <div class="card widget-item">
-                                <h4 class="widget-title">{{request.user.first_name}} {{request.user.last_name}}</h4>
+                                <h4 class="widget-title">{{request.user.profile.first_name}} {{request.user.profile.last_name}}</h4>
                                 <div class="widget-body">
                                     <div class="about-author">
                                         <p>I Don’t know how? But i believe that it is possible one day if i stay with my dream all time</p>
@@ -323,7 +320,7 @@
                                 <div class="profile-thumb">
                                     <a href="#">
                                         <figure class="profile-thumb-middle">
-                                            <img src="social_app/images/profile/profile-small-37.jpg" alt="profile picture">
+                                            <img src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="profile picture">
                                         </figure>
                                     </a>
                                 </div>

@@ -21,7 +21,7 @@
                                             <img src="{% static "social_app/images/banner/banner-small.jpg" %}" alt="">
                                         </a>
                                         <a href="{% url "profile" %}" class="profile-thumb-2">
-                                            <img src="{% static "social_app/images/profile/profile-midle-1.jpg" %}" alt="">
+                                            <img src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="">
                                         </a>
                                     </figure>
                                     <div class="profile-desc text-center">
