@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Post
 from django.contrib.auth.decorators import login_required
 
 
@@ -11,9 +11,11 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     
     profile = Profile.objects.filter(user=request.user).first()
+    posts = Post.objects.order_by('-created_at')
 
     context = {
-        'profile':profile
+        'profile':profile,
+        'posts':posts
     }
 
         
@@ -87,6 +89,17 @@ def user_logout(request):
 @login_required
 def photos(request):
     return render(request, 'social_app/photos.html')
+@login_required
+def add_post(request):
+    if request.post == 'POST':
+        Post.objects.create(
+            user = request.user,
+            body = request.POST.get('body'),
+            image = request.FILES.get('image')
+        )
+        Post.save()
+        return redirect('index')
+
 
 @login_required
 def friends(request):
