@@ -60,9 +60,6 @@
                             <label for="imageUpload">Upload profile image:</label>
                             <input class="single-field form-control" type="file" id="imageUpload" name="image" accept="image/*">
                         </div>
-                        <div class="col-6">
-                            <input type="email" class="single-field" placeholder="Email" name="email" value="{{ request.user.profile.email }}">
-                        </div>
                         <div class="col-md-6">
                             <input type="text" class="single-field" placeholder="First Name" name="first_name" value="{{ request.user.profile.first_name }}">
                         </div>
@@ -357,7 +354,8 @@
                                 <!-- Modal end -->
                             </div>
                         </div>
-                        {% for key, value in my_dict.items  %}
+                        {% for post in posts  %}
+                            {% if post.user == profile.user %}
                             <div class="card">
                                 <!-- post title start -->
                                 <div class="post-title d-flex align-items-center">
@@ -365,17 +363,17 @@
                                     <div class="profile-thumb">
                                         <a href="#">
                                             <figure class="profile-thumb-middle">
-                                                <img src="social_app/images/profile/profile-small-25.jpg" alt="profile picture">
+                                                <img src="{% if post.user.profile.profile_picture %} {{post.user.profile.profile_picture.url}} {% endif %}" alt="profile picture">
                                             </figure>
                                         </a>
                                     </div>
                                     <!-- profile picture end -->
-
+    
                                     <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">{{request.user.first_name}} {{request.user.last_name}}</a></h6>
-                                        <span class="post-time">35 min ago</span>
+                                        <h6 class="author"><a href="{% url "profile" %}"> {{post.user.profile.full_name}} </a></h6>
+                                        <span class="post-time"> {{post.created_at | timesince }} ago</span>
                                     </div>
-
+    
                                     <div class="post-settings-bar">
                                         <span></span>
                                         <span></span>
@@ -392,51 +390,20 @@
                                 <!-- post title start -->
                                 <div class="post-content">
                                     <p class="post-desc">
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                        default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                        in their infancy.
+                                        {{post.body}}
                                     </p>
-                                    <div class="post-thumb-gallery img-gallery">
-                                        <div class="row g-0">
-                                            <div class="col-8">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="{% static "social_app/images/costom/img1.jpg" %} ">
-                                                        <img src="{% static "social_app/images/costom/img3.jpg" %}" height="270" width="270" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <figure class="post-thumb">
-                                                            <a class="gallery-selector" href="{% static "social_app/images/costom/img2.jpg" %}">
-                                                                <img src="{% static "social_app/images/costom/img2.jpg" %}"  height="90" width="170" alt="post image">
-                                                            </a>
-                                                        </figure>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <figure class="post-thumb">
-                                                            <a class="gallery-selector" href="{% static "social_app/images/costom/img3.jpg" %}">
-                                                                <img src="{% static "social_app/images/costom/img5.jpg" %}" height="90" width="170" alt="post image">
-                                                            </a>
-                                                        </figure>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <figure class="post-thumb">
-                                                            <a class="gallery-selector" href="{% static "social_app/images/costom/img1.jpg" %}">
-                                                                <img src="{% static "social_app/images/costom/img1.jpg" %}" height="90" width="170" alt="post image">
-                                                            </a>
-                                                        </figure>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="post-thumb-gallery">
+                                        <figure class="post-thumb img-popup">
+                                            <a href="{% static "social_app/images/post/post-1.jpg" %}">
+                                                <img src="{% if post.image %} {{post.image.url}} {% endif %}" alt="post image">
+                                            </a>
+                                        </figure>
                                     </div>
                                     <div class="post-meta">
                                         <button class="post-meta-like">
                                             <i class="bi bi-heart-beat"></i>
-                                            <span>You and 207 people like this</span>
-                                            <strong>207</strong>
+                                            <span>You and 201 people like this</span>
+                                            <strong>201</strong>
                                         </button>
                                         <ul class="comment-share-meta">
                                             <li>
@@ -455,7 +422,10 @@
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
+                        
+                            {% endif %}
+                            
+                            {% endfor %}
                     </div>
                     <div class="col-lg-3 order-3">
                         <aside class="widget-area">

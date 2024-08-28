@@ -58,7 +58,6 @@ def signup(request):
             user=register_user,
             first_name = first_name,
             last_name = last_name,
-            email = email,
             age = age,
             gender = gender,
             country = country
@@ -89,15 +88,15 @@ def user_logout(request):
 @login_required
 def photos(request):
     return render(request, 'social_app/photos.html')
+
 @login_required
 def add_post(request):
-    if request.post == 'POST':
+    if request.method == 'POST':
         Post.objects.create(
             user = request.user,
             body = request.POST.get('body'),
             image = request.FILES.get('image')
         )
-        Post.save()
         return redirect('index')
 
 
@@ -107,16 +106,8 @@ def friends(request):
 
 @login_required
 def profile(request):
-    my_dict = {
-        'name1' : 'Zakir khan',
-        'name2' : 'Irshad Husian',
-        'name3' : 'Sohrab Khan',
-        'name4' : 'Khalid Ali Khan',
-        'name5' : 'Bilal Khan',
-        'name6' : 'Umair Khan',
-        'name7' : 'Omar Akhtar'
-    }
     profile = Profile.objects.filter(user=request.user).first()
+    posts = Post.objects.order_by('-created_at')
 
     if request.method == 'POST':
         user = request.user
@@ -136,15 +127,12 @@ def profile(request):
         
         profile.save()
 
-        context = {
-            'my_dict':my_dict,
-            'profile':profile
-        }
+    context = {
+        'profile':profile,
+        'posts':posts
+    }
+    return render(request, 'social_app/profiles.html',context)
 
-    
-    return render(request, 'social_app/profiles.html', {'profile':profile})
-
-    
 @login_required
 def about(request):
     return render(request, 'social_app/about.html')

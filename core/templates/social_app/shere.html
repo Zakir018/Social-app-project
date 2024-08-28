@@ -1,0 +1,24 @@
+    <!-- Modal start -->
+    <div class="modal fade" id="textbox" aria-labelledby="textbox">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Share Your Mood</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form enctype="multipart/form-data" method="post" action="{% url "add_post" %}">
+                    {% csrf_token %}
+                    <div class="modal-body custom-scroll">
+                        <textarea name="body" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="post-share-btn" data-bs-dismiss="modal">cancel</button>
+                        <button type="submit" class="post-share-btn">post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
