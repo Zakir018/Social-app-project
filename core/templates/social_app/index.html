@@ -263,19 +263,24 @@
                                     <h6 class="author"><a href="{% url "profile" %}"> {{post.user.profile.full_name}} </a></h6>
                                     <span class="post-time"> {{post.created_at | timesince }} ago</span>
                                 </div>
-
-                                <div class="post-settings-bar">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <div class="post-settings arrow-shape">
-                                        <ul>
-                                            <li><button>copy link to adda</button></li>
-                                            <li><button>edit post</button></li>
-                                            <li><button>embed adda</button></li>
-                                        </ul>
+                                
+                                    <div class="post-settings-bar">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <div class="post-settings arrow-shape">
+                                            <ul>
+                                                {% if post.user == profile.user %}
+                                                    <li><button>copy link to adda</button></li>
+                                                    <li><button>edit post</button></li>
+                                                    <li><a href="{% url "delete_post" post.id "index" %}" >  Delete post</a></li>
+                                                    {% else %}
+                                                    <li><button>copy link to adda</button></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                               
                             </div>
                             <!-- post title start -->
                             <div class="post-content">

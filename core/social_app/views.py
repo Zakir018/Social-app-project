@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect,HttpResponse, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from .models import Profile, Post
@@ -53,17 +53,17 @@ def signup(request):
                 email=email,
                 password=password,
         )
-            
-        Profile.objects.create(
-            user=register_user,
-            first_name = first_name,
-            last_name = last_name,
-            age = age,
-            gender = gender,
-            country = country
-        )
-        register_user.save()
-        return redirect('user_login')
+    
+            Profile.objects.create(
+                user = register_user,
+                first_name = first_name,
+                last_name = last_name,
+                age = age,
+                gender = gender,
+                country = country
+            )
+            register_user.save()
+            return redirect('user_login')
             
 
     return render(request, 'social_app/signup.html', {'message':message})
@@ -98,6 +98,11 @@ def add_post(request):
             image = request.FILES.get('image')
         )
         return redirect('index')
+
+@login_required
+def delete_post(request, pk, page):
+    Post.objects.get(id = pk).delete()
+    return redirect(page)
 
 
 @login_required
