@@ -102,6 +102,20 @@ def add_post(request):
 
 
 @login_required
+def edit_post(request, pk, page):
+    post = Post.objects.get(id = pk)
+    
+    if request.method == 'POST':
+        body = request.POST.get('update_body')
+        image = request.FILES.get('update_image')
+
+        if image:
+            Post.image = image
+        Post.body = body
+        post.save()
+        return redirect(page)
+
+@login_required
 def delete_post(request, pk, page):
     Post.objects.get(id = pk).delete()
     return redirect(page)
@@ -113,21 +127,29 @@ def friends(request):
 
 
 @login_required
-def profile(request):
+def edit_profile(request):
     profile = Profile.objects.filter(user=request.user).first()
     posts = Post.objects.order_by('-created_at')
 
     if request.method == 'POST':
         new_first_name = request.POST.get('first_name')
         new_last_name = request.POST.get('last_name')
-        new_email = request.POST.get('email')
+        gender = request.POST.get('gender')
+        country = request.POST.get('country')
+        age = request.POST.get('age')
         profile_img = request.FILES.get('image')
+
 
         if profile_img:
             profile.profile_picture = profile_img
         profile.first_name = new_first_name
         profile.last_name = new_last_name
-        profile.email = new_email
+        profile.gender = gender
+        profile.country = country
+        profile.age = age
+
+
+        
         profile.save()
 
     context = {

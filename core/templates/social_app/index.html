@@ -235,12 +235,10 @@
                                 <div class="share-content-box w-100">
                                     <form class="share-text-box">
                                         <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Say Something" data-bs-toggle="modal" data-bs-target="#textbox" id="email"></textarea>
-                                        <button class="btn-share" type="submit">share</button>
                                     </form>
                                 </div>
                                 <!-- share content box end -->
-
-                            
+                                {% include "social_app/shere.html" %}
                                 <!-- Modal end -->
                             </div>
                         </div>
@@ -263,24 +261,7 @@
                                     <h6 class="author"><a href="{% url "profile" %}"> {{post.user.profile.full_name}} </a></h6>
                                     <span class="post-time"> {{post.created_at | timesince }} ago</span>
                                 </div>
-                                
-                                    <div class="post-settings-bar">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                        <div class="post-settings arrow-shape">
-                                            <ul>
-                                                {% if post.user == profile.user %}
-                                                    <li><button>copy link to adda</button></li>
-                                                    <li><button>edit post</button></li>
-                                                    <li><a href="{% url "delete_post" post.id "index" %}" >  Delete post</a></li>
-                                                    {% else %}
-                                                    <li><button>copy link to adda</button></li>
-                                                {% endif %}
-                                            </ul>
-                                        </div>
-                                    </div>
-                               
+                                {% include "social_app/edit_post.html" %}
                             </div>
                             <!-- post title start -->
                             <div class="post-content">

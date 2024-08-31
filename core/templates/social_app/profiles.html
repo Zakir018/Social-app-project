@@ -45,58 +45,7 @@
   
   <!-- Modal -->
 <!-- Modal start -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="signup-inner--form" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="imageUpload">Upload profile image:</label>
-                            <input class="single-field form-control" type="file" id="imageUpload" name="image" accept="image/*">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="single-field" placeholder="First Name" name="first_name" value="{{ request.user.profile.first_name }}">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="single-field" placeholder="Last Name" name="last_name" value="{{ request.user.profile.last_name }}">
-                        </div>
-                        <div class="col-md-6">
-                            <select class="nice-select" name="gender">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <select class="nice-select" name="age">
-                                <option value="18+">18+</option>
-                                <option value="18-">18-</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <select class="nice-select" name="country">
-                                <option value="bangladesh">Bangladesh</option>
-                                <option value="australia">Australia</option>
-                                <option value="china">China</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" class="submit-btn">Update Profile</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "social_app/edit_profile.html" %}
 <!-- Modal end -->
                             </div>
                         </div>
