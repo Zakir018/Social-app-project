@@ -5,22 +5,20 @@ from .models import Profile, Post
 from django.contrib.auth.decorators import login_required
 
 
-
 # Create your views here.
 @ login_required
 def index(request):
-    
     profile = Profile.objects.filter(user=request.user).first()
     posts = Post.objects.order_by('-created_at')
 
+    # context dictionary
     context = {
-        'profile':profile,
-        'posts':posts
+        'profile': profile,
+        'posts': posts
     }
-
-        
     
-    return render(request, 'social_app/index.html',context)
+    return render(request, 'social_app/index.html', context)
+
 
 def signup(request):
     message = ''
@@ -81,13 +79,16 @@ def user_login(request):
 
     return render(request, 'social_app/user_login.html')
 
+
 def user_logout(request):
     logout(request)
     return redirect('user_login')
 
+
 @login_required
 def photos(request):
     return render(request, 'social_app/photos.html')
+
 
 @login_required
 def add_post(request):
@@ -99,16 +100,17 @@ def add_post(request):
         )
         return redirect('index')
 
+
 @login_required
 def delete_post(request, pk, page):
     Post.objects.get(id = pk).delete()
     return redirect(page)
 
 
-
 @login_required
 def friends(request):
     return render(request, 'social_app/friends.html')
+
 
 @login_required
 def profile(request):
@@ -116,28 +118,24 @@ def profile(request):
     posts = Post.objects.order_by('-created_at')
 
     if request.method == 'POST':
-        user = request.user
-
-        # Get new values from POST request
         new_first_name = request.POST.get('first_name')
         new_last_name = request.POST.get('last_name')
         new_email = request.POST.get('email')
         profile_img = request.FILES.get('image')
 
-        # Update the user's details
         if profile_img:
             profile.profile_picture = profile_img
         profile.first_name = new_first_name
         profile.last_name = new_last_name
         profile.email = new_email
-        
         profile.save()
 
     context = {
-        'profile':profile,
-        'posts':posts
+        'profile': profile,
+        'posts': posts
     }
     return render(request, 'social_app/profiles.html',context)
+
 
 @login_required
 def about(request):
