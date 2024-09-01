@@ -1,0 +1,27 @@
+
+   <!-- Modal start -->
+   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form enctype="multipart/form-data" method="post" action="{% url 'edit_post' %}">
+            {% csrf_token %}
+            <input type="text" hidden name="id" id="edit_post_id">
+            <input type="text" hidden name="page" id="edit_post_page">
+            <div class="modal-body custom-scroll">
+                <textarea name="body" id="edit_post_body" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="post-share-btn" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="post-share-btn">Save changes</button>
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>

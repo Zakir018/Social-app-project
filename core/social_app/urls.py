@@ -9,11 +9,12 @@ urlpatterns = [
     path('user_login/', views.user_login, name='user_login'),
     path('logout/', views.user_logout, name='user_logout'),
     path('about/', views.about, name='about'),
-    path('profile/', views.profile, name='profile'),
+    path('profile/', views.edit_profile, name='profile'),
     path('photos/', views.photos, name='photos'),
     path('friends/', views.friends, name='friends'),
     path('posts/', views.add_post, name='add_post'),
-    path('post/<int:pk>/<str:page>/', views.delete_post, name='delete_post'),
+    path('delete_post/<int:pk>/<str:page>/', views.delete_post, name='delete_post'),
+    path('edit_post/', views.edit_post, name='edit_post'),
 
 ]
 
