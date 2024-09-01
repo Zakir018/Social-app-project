@@ -102,17 +102,19 @@ def add_post(request):
 
 
 @login_required
-def edit_post(request, pk, page):
-    post = Post.objects.get(id = pk)
-    
+def edit_post(request):
+    print(request.POST)
     if request.method == 'POST':
-        body = request.POST.get('update_body')
-        image = request.FILES.get('update_image')
-
+        id = request.POST.get('id')
+        page = request.POST.get('page')
+        body =request.POST.get('body')
+        image = request.FILES.get('image')
+        post = Post.objects.get(id = id)
         if image:
-            Post.image = image
-        Post.body = body
+            post.image = image
+        post.body = body
         post.save()
+
         return redirect(page)
 
 @login_required

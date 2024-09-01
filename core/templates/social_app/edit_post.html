@@ -1,20 +1,4 @@
-<div class="post-settings-bar">
-  <span></span>
-  <span></span>
-  <span></span>
-  <div class="post-settings arrow-shape">
-      <ul>
-          {% if post.user == profile.user %}
-              <li><button>Copy post link</button></li>
-              <li><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Edit Post
-              </a></li>
-              <li><a href="{% url "delete_post" post.id "index" %}" >  Delete post</a></li>
-              {% else %}
-              <li><button>copy link to adda</button></li>
-          {% endif %}
-      </ul>
-  </div>
+
    <!-- Modal start -->
    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -24,11 +8,13 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form enctype="multipart/form-data" method="post" action="{% url "edit_post" post.id "index" %}">
+          <form enctype="multipart/form-data" method="post" action="{% url 'edit_post' %}">
             {% csrf_token %}
+            <input type="text" hidden name="id" id="edit_post_id">
+            <input type="text" hidden name="page" id="edit_post_page">
             <div class="modal-body custom-scroll">
-                <textarea name="update_body" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
-                <input type="file" name="update_image" class="form-control" accept="image/*">
+                <textarea name="body" id="edit_post_body" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                <input type="file" name="image" class="form-control" accept="image/*">
             </div>
             <div class="modal-footer">
               <button type="button" class="post-share-btn" data-bs-dismiss="modal">Close</button>
@@ -39,4 +25,3 @@
       </div>
     </div>
   </div>
-</div>
