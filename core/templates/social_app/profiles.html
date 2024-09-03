@@ -283,7 +283,6 @@
                             </div>
                         </div>
                         {% for post in posts  %}
-                            {% if post.user == profile.user %}
                             <div class="card">
                                 <!-- post title start -->
                                 <div class="post-title d-flex align-items-center">
@@ -344,9 +343,9 @@
                                         </button>
                                         <ul class="comment-share-meta">
                                             <li>
-                                                <button class="post-comment">
+                                                <button onclick="addComment('{{post.id}}', 'profile')" class="post-comment" data-bs-toggle="modal" data-bs-target="#staticBackdrop_2" >
                                                     <i class="bi bi-chat-bubble"></i>
-                                                    <span>41</span>
+                                                    <span>{{post.count}}</span>
                                                 </button>
                                             </li>
                                             <li>
@@ -359,9 +358,6 @@
                                     </div>
                                 </div>
                             </div>
-                        
-                            {% endif %}
-                            
                             {% endfor %}
                     </div>
                     <div class="col-lg-3 order-3">
