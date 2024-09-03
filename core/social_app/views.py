@@ -1,8 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from .models import Profile, Post
+from .models import Profile, Post, Comments
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.utils.timesince import timesince
 
 
 # Create your views here.
@@ -10,11 +12,13 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     profile = Profile.objects.filter(user=request.user).first()
     posts = Post.objects.order_by('-created_at')
+    for post in posts:
+        post.count = Comments.objects.filter(post=post).count()
 
     # context dictionary
     context = {
         'profile': profile,
-        'posts': posts
+        'posts': posts,
     }
     
     return render(request, 'social_app/index.html', context)
@@ -103,7 +107,6 @@ def add_post(request):
 
 @login_required
 def edit_post(request):
-    print(request.POST)
     if request.method == 'POST':
         id = request.POST.get('id')
         page = request.POST.get('page')
@@ -122,6 +125,50 @@ def delete_post(request, pk, page):
     Post.objects.get(id = pk).delete()
     return redirect(page)
 
+def add_comments(request) :
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        page = request.POST.get('page')
+        body = request.POST.get('comment_body')
+        post = Post.objects.get(id=id)
+        
+        comments = Comments.objects.create(
+            user =request.user,
+            post = post,
+            body = body,
+        )
+        comments.save()
+        return redirect(page)
+
+
+def fetch_comments(request, pk):
+    post = Post.objects.get(id=pk)
+    comments = Comments.objects.filter(post=post).values(
+        'body',
+        'user__profile__profile_picture',
+        'user__profile__first_name',
+        'user__profile__last_name',
+        'created_at'
+        )
+
+    comments_data = []
+    for comment in comments:
+        item = {
+            "body": comment['body'],
+            "image": f"/media/{comment['user__profile__profile_picture']}",
+            "name": f"{comment['user__profile__first_name']} {comment['user__profile__last_name']}",
+            "time": timesince(comment['created_at'])
+        }
+        comments_data.append(item)
+    return JsonResponse({'status': 'success', 'comments': comments_data})
+
+
+"""
+comment_dict = {"body": "hi there"}
+comment_dict['body'] = "hi there"
+
+"""
+
 
 @login_required
 def friends(request):
@@ -131,7 +178,10 @@ def friends(request):
 @login_required
 def edit_profile(request):
     profile = Profile.objects.filter(user=request.user).first()
-    posts = Post.objects.order_by('-created_at')
+    posts = Post.objects.filter(user=request.user).order_by('-created_at')
+    for post in posts:
+        post.count = Comments.objects.filter(post=post).count()
+
 
     if request.method == 'POST':
         new_first_name = request.POST.get('first_name')

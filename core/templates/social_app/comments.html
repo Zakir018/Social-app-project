@@ -1,0 +1,86 @@
+{% load static %}
+<div
+  class="modal fade"
+  id="staticBackdrop_2"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Comments</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container mt-5">
+          <div class="row" id="comments_container">
+
+          </div>
+          <!-- Existing Comment Card -->
+          
+          {% comment %} {% for comment in comments  %}
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="d-flex align-items-start">
+                  <img src="{% if comment.user.profile.profile_picture %} {{comment.user.profile.profile_picture.url}} {% endif %}"
+                  height="45px" class="rounded-circle me-3" alt="User Profile
+                  Picture">
+                  <div>
+                    <h4 class="h6 mb-1">{{comment.user.profile.full_name}}</h4>
+                    <p class="mb-2">
+                      {{comment.body}}
+                    </p>
+                  </div>
+                </div>
+                <!-- Like and Reply Buttons -->
+                <div class="d-flex align-items-center mt-3">
+                  <button class="btn btn-outline-primary btn-sm me-2">Like</button>
+                  <button class="btn btn-outline-secondary btn-sm me-3">Reply</button>
+                  <span class="text-muted small">{{comment.created_at | timesince}} ago</span>
+              </div>
+              </div>
+            </div>
+          {% endfor %} {% endcomment %}
+          <!-- Input Field for New Comment -->
+          <form method='post' action="{% url "add_comments" %}">
+            {% csrf_token %}
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <img
+                  height= "40px"
+                  src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}"
+                  class="rounded-circle me-3"
+                  alt="User Profile Picture"
+                />
+                <input type="hidden"  name="id" id="comment_id">
+                <input type="hidden"  name="page" id="page_id">
+                <input
+                  name="comment_body"
+                  type="text"
+                  class="form-control"
+                  placeholder=" Type your comment..."
+                  aria-label="Type your comment"
+                  id="comment_body"
+                />
+              </div>
+              <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="post-share-btn">
+                  Post Comment
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    Scrolling long cont
+  </div>
+</div>

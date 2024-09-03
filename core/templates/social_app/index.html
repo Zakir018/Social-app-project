@@ -272,7 +272,7 @@
                                                 <li><button  
                                                     onclick="editPost('{{post.id}}', '{{post.body | escapejs}}', 'index')"
                                                     data-bs-toggle="modal" 
-                                                    data-bs-target="#staticBackdrop">
+                                                    data-bs-target="#staticBackdrop_1">
                                                   Edit Post
                                                 </button></li>
                                                 <li><a href="{% url "delete_post" post.id "index" %}" >  Delete post</a></li>
@@ -303,9 +303,9 @@
                                     </button>
                                     <ul class="comment-share-meta">
                                         <li>
-                                            <button class="post-comment">
+                                            <button onclick="addComment('{{post.id}}', 'index')" class="post-comment" data-bs-toggle="modal" data-bs-target="#staticBackdrop_2" >
                                                 <i class="bi bi-chat-bubble"></i>
-                                                <span>41</span>
+                                                <span>{{post.count}}</span>
                                             </button>
                                         </li>
                                         <li>
