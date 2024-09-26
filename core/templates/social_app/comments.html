@@ -22,34 +22,8 @@
       <div class="modal-body">
         <div class="container mt-5">
           <div class="row" id="comments_container">
-
+            {% comment %} comments body give in JS {% endcomment %}
           </div>
-          <!-- Existing Comment Card -->
-          
-          {% comment %} {% for comment in comments  %}
-            <div class="card mb-3">
-              <div class="card-body">
-                <div class="d-flex align-items-start">
-                  <img src="{% if comment.user.profile.profile_picture %} {{comment.user.profile.profile_picture.url}} {% endif %}"
-                  height="45px" class="rounded-circle me-3" alt="User Profile
-                  Picture">
-                  <div>
-                    <h4 class="h6 mb-1">{{comment.user.profile.full_name}}</h4>
-                    <p class="mb-2">
-                      {{comment.body}}
-                    </p>
-                  </div>
-                </div>
-                <!-- Like and Reply Buttons -->
-                <div class="d-flex align-items-center mt-3">
-                  <button class="btn btn-outline-primary btn-sm me-2">Like</button>
-                  <button class="btn btn-outline-secondary btn-sm me-3">Reply</button>
-                  <span class="text-muted small">{{comment.created_at | timesince}} ago</span>
-              </div>
-              </div>
-            </div>
-          {% endfor %} {% endcomment %}
-          <!-- Input Field for New Comment -->
           <form method='post' action="{% url "add_comments" %}">
             {% csrf_token %}
             <div class="card-body">

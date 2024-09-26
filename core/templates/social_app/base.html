@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Adda - Social Network HTML Template</title>
+        <title>Social App</title>
         <meta name="robots" content="noindex, follow" />
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,6 +32,7 @@
         <!-- light gallery css -->
         <link rel="stylesheet" href="{% static "social_app/css/plugins/lightgallery.min.css" %}">
         <!-- Main Style CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="{% static "social_app/css/style.css" %}">
     
     </head>
@@ -262,7 +263,7 @@
                                             <li><a href="#"><i class="flaticon-document"></i>Activity</a></li>
                                         </ul>
                                         <ul>
-                                            <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
+                                            <li><a href="{% url "setting" %}"><i class="flaticon-settings"></i>Setting</a></li>
                                             <li><a href="{% url "user_logout" %}"><i class="flaticon-unlock"></i>Sign out</a></li>
                                         </ul>
                                     </div>
@@ -468,134 +469,25 @@
                                 </div>
                                 <div class="frnd-search-inner custom-scroll">
                                     <ul>
+                                        {% for friend in friends %}
                                         <li class="d-flex align-items-center profile-active">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb active">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-1.jpg" alt="profile picture">
+                                                        <img src="{% if friend.profile_picture %}{{friend.profile_picture.url}}{% endif %}" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
                                             <!-- profile picture end -->
 
                                             <div class="posted-author">
-                                                <h6 class="author">Jon Wilime</h6>
+                                                <h6 class="author">{{friend.full_name}}</h6>
                                                 <p>Many desktop publishing</p>
                                             </div>
                                         </li>
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb active">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-2.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                                <button class="add-frnd">add friend</button>
-                                            </div>
-                                        </li>
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb active">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-3.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Mili Raoulin</a></h6>
-                                                <button class="add-frnd">add friend</button>
-                                            </div>
-                                        </li>
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb active">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-4.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Jon Wilime</a></h6>
-                                                <button class="add-frnd">10 mutual friends</button>
-                                            </div>
-                                        </li>
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb active">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-6.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Robart faul</a></h6>
-                                                <button class="add-frnd">12 mutual friends</button>
-                                            </div>
-                                        </li>
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb active">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-7.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Mili Raoulin</a></h6>
-                                                <button class="add-frnd">add friend</button>
-                                            </div>
-                                        </li>
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb active">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-8.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Jon Wilime</a></h6>
-                                                <button class="add-frnd">10 mutual friends</button>
-                                            </div>
-                                        </li>
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb active">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="social_app/images/profile/profile-35x35-9.jpg" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-
-                                            <div class="posted-author">
-                                                <h6 class="author"><a href="profile.html">Robart faul</a></h6>
-                                                <button class="add-frnd">12 mutual friends</button>
-                                            </div>
-                                        </li>
+                                        {% endfor %}
+                                        
                                     </ul>
                                 </div>
                             </div>
@@ -940,50 +832,7 @@
     </div>
 </footer>
 <script>
-    function editPost(id, body, page){
-        document.getElementById("edit_post_id").value = id;
-        document.getElementById("edit_post_body").value = body;
-        document.getElementById("edit_post_page").value = page;
-    }
-    function addComment(id, page){
-        document.getElementById("comment_id").value = id;
-        document.getElementById("page_id").value = page;
-        let commentsContainer = document.getElementById('comments_container');
-        commentsContainer.innerHTML = "";
-        fetch(`/fetch-comments/${id}`)
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status == 'success') {
-                let commentsHtml = "";
-                data.comments.forEach((comment) => {
-                    commentsHtml += `
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start">
-                                <img src="${comment.image}"
-                                height="45px" class="rounded-circle me-3" alt="User Profile
-                                Picture">
-                                <div>
-                                    <h4 class="h6 mb-1">${comment.name}</h4>
-                                    <p class="mb-2">
-                                    ${comment.body}
-                                    </p>
-                                </div>
-                                </div>
-                                <!-- Like and Reply Buttons -->
-                                <div class="d-flex align-items-center mt-3">
-                                <button class="btn btn-outline-primary btn-sm me-2">Like</button>
-                                <button class="btn btn-outline-secondary btn-sm me-3">Reply</button>
-                                <span class="text-muted small">${comment.time} ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                })
-                commentsContainer.innerHTML = commentsHtml;
-            }
-        })
-    } 
+    
 </script>
 {% include "social_app/shere.html" %}
 {% include "social_app/edit_post.html" %}
@@ -1009,6 +858,8 @@
 <script src=" {% static "social_app/js/plugins/imagesloaded.pkgd.min.js" %} "></script>
 <!-- isotope filter js -->
 <script src=" {% static "social_app/js/plugins/isotope.pkgd.min.js" %} "></script>
+{% comment %} Base js {% endcomment %}
+<script src="{% static "social_app/js/base.js" %}"></script>
 <!-- Main JS -->
 <script src=" {% static "social_app/js/main.js" %}"> </script >
 </body>

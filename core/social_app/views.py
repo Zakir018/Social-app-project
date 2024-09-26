@@ -1,7 +1,7 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect,HttpResponse, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from .models import Profile, Post, Comments
+from .models import Profile, Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.timesince import timesince
@@ -11,14 +11,17 @@ from django.utils.timesince import timesince
 @ login_required
 def index(request):
     profile = Profile.objects.filter(user=request.user).first()
+    friends = Profile.objects.all()
     posts = Post.objects.order_by('-created_at')
+    
     for post in posts:
-        post.count = Comments.objects.filter(post=post).count()
-
+        post.liked_by_user = post.is_liked_by_user(request.user)
+        
     # context dictionary
     context = {
         'profile': profile,
         'posts': posts,
+        'friends':friends,
     }
     
     return render(request, 'social_app/index.html', context)
@@ -90,7 +93,64 @@ def user_logout(request):
 
 
 @login_required
+def setting(request):
+    user = request.user
+
+    return render(request, 'social_app/setting.html')
+
+
+@login_required
+def edit_personal_information (request):
+    user = request.user
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+
+        user.username = username
+        user.email = email
+        user.save()
+
+        return redirect('setting')
+        
+    
+@login_required
+def change_user_password(request):
+    message = 'ok g'
+    user = request.user
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if not user.check_password(old_password):
+            message = 'Current password incorrent'
+
+        elif new_password != confirm_password :
+            message = 'New password and confirm password are not the same'
+
+        else:
+            user.set_password(new_password)
+            user.save()
+            
+            return redirect('setting')
+        
+    
+    return render(request, 'social_app/setting.html',{'message': message})
+
+
+@login_required
+def delete_user(request):
+    user = request.user
+    logout(request)
+    user.delete()
+
+    return redirect('user_login')
+
+
+@login_required
 def photos(request):
+
     return render(request, 'social_app/photos.html')
 
 
@@ -113,6 +173,7 @@ def edit_post(request):
         body =request.POST.get('body')
         image = request.FILES.get('image')
         post = Post.objects.get(id = id)
+
         if image:
             post.image = image
         post.body = body
@@ -120,11 +181,14 @@ def edit_post(request):
 
         return redirect(page)
 
+
 @login_required
 def delete_post(request, pk, page):
     Post.objects.get(id = pk).delete()
     return redirect(page)
 
+
+login_required
 def add_comments(request) :
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -132,7 +196,7 @@ def add_comments(request) :
         body = request.POST.get('comment_body')
         post = Post.objects.get(id=id)
         
-        comments = Comments.objects.create(
+        comments = Comment.objects.create(
             user =request.user,
             post = post,
             body = body,
@@ -141,9 +205,10 @@ def add_comments(request) :
         return redirect(page)
 
 
+login_required
 def fetch_comments(request, pk):
     post = Post.objects.get(id=pk)
-    comments = Comments.objects.filter(post=post).values(
+    comments = Comment.objects.filter(post=post).values(
         'body',
         'user__profile__profile_picture',
         'user__profile__first_name',
@@ -163,11 +228,31 @@ def fetch_comments(request, pk):
     return JsonResponse({'status': 'success', 'comments': comments_data})
 
 
-"""
-comment_dict = {"body": "hi there"}
-comment_dict['body'] = "hi there"
+@login_required
+def post_like(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    post = Post.objects.get(id=pk)
+    user = request.user
+    liked = False
+    like = Like.objects.filter(user=user, post=post).first()
 
-"""
+    if like:
+        like.delete()
+        message = "You unlike this post"
+
+    else:
+        Like.objects.create(user = user, post = post)
+        liked = True
+        message = "You like this post"
+
+    response_data = {
+        "liked":liked, 
+        "total_likes": post.likes.count(),
+        "message":message
+        }
+    
+    return JsonResponse(response_data)
+
 
 
 @login_required
@@ -180,7 +265,7 @@ def edit_profile(request):
     profile = Profile.objects.filter(user=request.user).first()
     posts = Post.objects.filter(user=request.user).order_by('-created_at')
     for post in posts:
-        post.count = Comments.objects.filter(post=post).count()
+        post.liked_by_user = post.is_liked_by_user(request.user)
 
 
     if request.method == 'POST':
@@ -189,25 +274,26 @@ def edit_profile(request):
         gender = request.POST.get('gender')
         country = request.POST.get('country')
         age = request.POST.get('age')
-        profile_img = request.FILES.get('image')
+        profile_img = request.FILES.get('profile_image')
+        cover_img = request.FILES.get('cover_image')
 
 
         if profile_img:
             profile.profile_picture = profile_img
+            profile.cover_picture = cover_img
         profile.first_name = new_first_name
         profile.last_name = new_last_name
         profile.gender = gender
         profile.country = country
         profile.age = age
 
-
-        
         profile.save()
 
     context = {
         'profile': profile,
         'posts': posts
     }
+    
     return render(request, 'social_app/profiles.html',context)
 
 

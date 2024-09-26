@@ -6,7 +6,8 @@
 
     <main>
         <div class="main-wrapper">
-            <div class="profile-banner-large bg-img" data-bg="{% static "social_app/images/banner/profile-banner.jpg" %}">
+            <div class="profile-banner-large bg-img"
+            " data-bg="{% if profile.cover_picture %} {{profile.cover_picture.url}} {% endif %}">
             </div>
             <div class="profile-menu-area bg-white">
                 <div class="container">
@@ -312,8 +313,8 @@
                                                     <li><button  
                                                         onclick="editPost('{{post.id}}', '{{post.body | escapejs}}', 'profile')"
                                                         data-bs-toggle="modal" 
-                                                        data-bs-target="#staticBackdrop">
-                                                      Edit Post
+                                                        data-bs-target="#staticBackdrop_1">
+                                                    Edit Post
                                                     </button></li>
                                                     <li><a href="{% url "delete_post" post.id "index" %}" >  Delete post</a></li>
                                                     {% else %}
@@ -336,16 +337,16 @@
                                         </figure>
                                     </div>
                                     <div class="post-meta">
-                                        <button class="post-meta-like">
-                                            <i class="bi bi-heart-beat"></i>
-                                            <span>You and 201 people like this</span>
-                                            <strong>201</strong>
+                                        <button onclick="postLike({{ post.id }})" class="post-meta-like">
+                                        <i id="like_button{{post.id}}" class="bi bi-heart-fill {% if post.liked_by_user %}text-danger{% endif %}"></i>
+                                        <span id="likes_count_{{ post.id }}" >{{post.total_likes}}</span>
+                                        <strong>201</strong>
                                         </button>
                                         <ul class="comment-share-meta">
                                             <li>
                                                 <button onclick="addComment('{{post.id}}', 'profile')" class="post-comment" data-bs-toggle="modal" data-bs-target="#staticBackdrop_2" >
-                                                    <i class="bi bi-chat-bubble"></i>
-                                                    <span>{{post.count}}</span>
+                                                    <i class="bi bi-chat-dots"></i>
+                                                    <span>{{post.total_comments}}</span>
                                                 </button>
                                             </li>
                                             <li>

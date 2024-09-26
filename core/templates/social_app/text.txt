@@ -1,0 +1,15 @@
+function postLike(id){
+    const like_btn = document.getElementById(`like_button${id}`);
+    console.log(like_btn)
+    fetch('/post_like/?id=${id}')
+    .then((response)=>response.json)
+    .then((data)=>{
+
+        if (data.liked){
+            like_btn.classList.add('text-danger')
+        }
+        else{
+            like_btn.classList.remove('text-danger')
+        }
+    }
+}

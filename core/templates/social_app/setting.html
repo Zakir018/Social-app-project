@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+</head>
+<style>
+    /* Custom Primary Color */
+    .custom-primary {
+        color: #dc4734 !important;
+    }
+
+    .custom-bg-primary {
+        background-color: #dc4734 !important;
+    }
+
+    .custom-border-primary {
+        border-color: #dc4734 !important;
+    }
+
+    /* Custom Button */
+    .custom-btn-primary {
+        background-color: #dc4734 !important;
+        border-color: #dc4734 !important;
+        color: white !important;
+    }
+
+    .custom-btn-primary:hover {
+        background-color: #b83a2c !important; /* Darker shade for hover */
+        border-color: #b83a2c !important;
+    }
+    </style>
+<body>
+    <div class="container mt-5">
+        <!-- Exit Button -->
+        <div class="d-flex justify-content-end mb-4">
+            <a href="{% url "profile" %}" class="btn btn-danger" id="exitButton"><i class="bi bi-x-circle"></i> Exit</a>
+        </div>
+    <div class="container mt-5">
+        <h2 class="mb-4">Settings</h2>
+        <!-- Nav pills -->
+        <ul class="nav nav-pills mb-3" id="settingsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="personal-info-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="true">
+                    <i class="bi bi-person"></i> Personal Information
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab" aria-controls="security" aria-selected="false">
+                    <i class="bi bi-shield-lock"></i> Security
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="delete-account-tab" data-bs-toggle="tab" data-bs-target="#delete-account" type="button" role="tab" aria-controls="delete-account" aria-selected="false">
+                    <i class="bi bi-trash"></i> Delete Account
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="deactivate-account-tab" data-bs-toggle="tab" data-bs-target="#deactivate-account" type="button" role="tab" aria-controls="deactivate-account" aria-selected="false">
+                    <i class="bi bi-toggle-off"></i> Deactivate Account
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="privacy-settings-tab" data-bs-toggle="tab" data-bs-target="#privacy-settings" type="button" role="tab" aria-controls="privacy-settings" aria-selected="false">
+                    <i class="bi bi-shield-lock"></i> Privacy Settings
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content p-3 border rounded-3 bg-light">
+            <!-- Personal Information Tab -->
+            <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+                <div class="p-4 mb-3 border rounded bg-white shadow-sm">
+                    <h5 class="mb-5">Personal Information</h5>
+                    <p class="mb-3"><strong class="text-uppercase text-muted">Name:</strong> <span class="fw-bold ">{{request.user.profile.full_name}}</span></p>
+                    <p class="mb-3"><strong class="text-uppercase text-muted">Username:</strong> <span class="fw-bold ">{{request.user.username}}</span></p>
+                    <p class="mb-3"><strong class="text-uppercase text-muted">Email:</strong> <span class="fw-bold ">{{request.user.email}}</span></p>
+                    <button class="btn custom-btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#editPersonalInfoModal"><i class="bi bi-pencil-square"></i> Edit Personal Information</button>
+                </div>
+            </div>
+            <!--Security Tab-->
+            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                <div class="p-4 mb-3 border rounded bg-white shadow-sm">
+                    <h5 class="mb-4">Security</h5>
+                    <p><strong>Change Password</strong> {{message}} </p>
+                    
+                    <button class="btn custom-btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class="bi bi-key"></i> Change Password</button>
+                    <hr>
+                    <p><strong>Security Instructions:</strong></p>
+                    <ul>
+                        <li>Use a strong password that includes a mix of letters, numbers, and special characters.</li>
+                        <li>Avoid using the same password for multiple accounts.</li>
+                        <li>Enable two-factor authentication (2FA) for added security.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Delete Account Tab -->
+            <div class="tab-pane fade" id="delete-account" role="tabpanel" aria-labelledby="delete-account-tab">
+                <div class="p-3 mb-3 border rounded bg-white shadow-sm">
+                    <h5>Delete Account</h5>
+                    <p>Deleting your account is permanent and cannot be undone. All your data will be removed.</p>
+                    <a href="{% url "delete_user" %}" class="btn btn-danger"><i class="bi bi-trash"></i> Delete Account</a>
+                </div>
+            </div>
+
+            <!-- Deactivate Account Tab -->
+            <div class="tab-pane fade" id="deactivate-account" role="tabpanel" aria-labelledby="deactivate-account-tab">
+                <div class="p-3 mb-3 border rounded bg-white shadow-sm">
+                    <h5>Deactivate Account</h5>
+                    <p>Deactivating your account will temporarily disable it. You can reactivate it by logging in again.</p>
+                    <button class="btn btn-warning"><i class="bi bi-toggle-off"></i> Deactivate Account</button>
+                </div>
+            </div>
+
+            <!-- Privacy Settings Tab -->
+            <div class="tab-pane fade" id="privacy-settings" role="tabpanel" aria-labelledby="privacy-settings-tab">
+                <div class="p-3 mb-3 border rounded bg-white shadow-sm">
+                    <h5>Privacy Settings</h5>
+                    <p>Your privacy is important to us. Here are some important details:</p>
+                    <ul>
+                        <li><strong>Data Collection:</strong> We collect only the data necessary to provide our services. Your data is never shared with third parties without your consent.</li>
+                        <li><strong>Profile Visibility:</strong> You can control who can see your profile and activities from the privacy settings in your account.</li>
+                        <li><strong>Data Retention:</strong> You can request to delete your data at any time, and we will ensure that it is permanently removed from our servers.</li>
+                        <li><strong>Cookies:</strong> Our site uses cookies to enhance your experience. You can manage your cookie preferences in your browser settings.</li>
+                        <li><strong>Security:</strong> We use advanced security measures to protect your data, including encryption and secure servers.</li>
+                    </ul>
+                    <p>If you have any questions about our privacy practices, feel free to <a href="#">contact us</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Modal-edit personal information start-->
+    <div class="modal fade" id="editPersonalInfoModal" tabindex="-1" aria-labelledby="editPersonalInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPersonalInfoModalLabel">Edit Personal Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url "edit_personal_information" %}" >
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" value="{{request.user.profile.full_name}}" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" id="username" value="{{request.user.username}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="email" value="{{request.user.email}}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="su" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal-personal information-end-->
+    <!--modal-changpassword-start-->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method ="post" action="{% url "change_user_password" %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <p>{{message}}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" name="old_password" class="form-control" id="currentPassword" placeholder="Enter current password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" name="new_password" class="form-control" id="newPassword" placeholder="Enter new password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" name="confirm_password" class="form-control" id="confirmNewPassword" placeholder="Confirm new password">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal-changpassword-end-->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function editPersonalInfo() {
+            alert('Redirect to edit personal information page or open a modal to edit.');
+        }
+    </script>
+</body>
+</html>

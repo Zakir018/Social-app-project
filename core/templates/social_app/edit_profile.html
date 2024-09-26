@@ -10,8 +10,12 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
-                            <label for="imageUpload">Upload profile image:</label>
-                            <input class="single-field form-control" type="file" id="imageUpload" name="image" accept="image/*">
+                            <label for="imageUpload1">Upload profile image:</label>
+                            <input class="single-field form-control" type="file" id="imageUpload1" name="profile_image" accept="image/*">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="imageUpload2">Upload cover image:</label>
+                            <input class="single-field form-control" type="file" id="imageUpload2" name="cover_image" accept="image/*">
                         </div>
                         <div class="col-md-6">
                             <input type="text" class="single-field" placeholder="First Name" name="first_name" value="{{ request.user.profile.first_name }}">
