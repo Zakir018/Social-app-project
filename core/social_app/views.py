@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from .models import Profile, Post, Comment, Like
+from .models import Profile, Post, Comment, Like, Social_group
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.timesince import timesince
@@ -13,7 +13,8 @@ def index(request):
     profile = Profile.objects.filter(user=request.user).first()
     friends = Profile.objects.all()
     posts = Post.objects.order_by('-created_at')
-    
+    groups = Social_group.objects.all()
+    print(groups)
     for post in posts:
         post.liked_by_user = post.is_liked_by_user(request.user)
         
@@ -22,6 +23,7 @@ def index(request):
         'profile': profile,
         'posts': posts,
         'friends':friends,
+        'groups':groups
     }
     
     return render(request, 'social_app/index.html', context)
@@ -190,17 +192,21 @@ def delete_post(request, pk, page):
 
 login_required
 def add_comments(request) :
+    message = ''
     if request.method == 'POST':
         id = request.POST.get('id')
         page = request.POST.get('page')
         body = request.POST.get('comment_body')
         post = Post.objects.get(id=id)
         
-        comments = Comment.objects.create(
-            user =request.user,
-            post = post,
-            body = body,
-        )
+        if body == "":
+            message = 'comment is emty'
+        else:
+            comments = Comment.objects.create(
+                user =request.user,
+                post = post,
+                body = body,
+            )
         comments.save()
         return redirect(page)
 
@@ -254,6 +260,28 @@ def post_like(request, pk):
     return JsonResponse(response_data)
 
 
+@login_required
+def create_group(request):
+    if request.method == "POST":
+        group = Social_group.objects.create(
+            user = request.user,
+            name = request.POST.get('group_name'),
+            description = request.POST.get('group_description'),
+            profile_img = request.FILES.get('group_profile'),
+            cover_img = request.FILES.get('group_coverpic')
+        )
+        group.save()
+        return redirect('group', group.id )
+
+
+
+
+@login_required
+def group(request, pk):
+    print(pk)
+    group = get_object_or_404(Social_group, id=pk)
+    profile = Profile.objects.filter(user=request.user).first()
+    return render(request, 'social_app/group.html', {'group':group, 'profile':profile})
 
 @login_required
 def friends(request):
@@ -280,6 +308,7 @@ def edit_profile(request):
 
         if profile_img:
             profile.profile_picture = profile_img
+        if cover_img:
             profile.cover_picture = cover_img
         profile.first_name = new_first_name
         profile.last_name = new_last_name

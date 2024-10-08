@@ -14,7 +14,7 @@ class Profile(models.Model):
     profile_picture = models.ImageField(  null=True, blank=True, upload_to='profile-images/')
 
     def __str__(self):
-        return self.first_name
+        return f"{self.first_name} {self.last_name}"
     
     @property
     def full_name(self):
@@ -61,4 +61,14 @@ class Like(models.Model):
 
     def __str__(self):
         return f"{self.user} like {self.post}"
+    
+class Social_group(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_by")
+    name = models.CharField(max_length= 100)
+    description = models.CharField(max_length= 200)
+    profile_img = models.ImageField(null= True, blank= True, upload_to="group_profile")
+    cover_img = models.ImageField(null= True, blank= True, upload_to= "group_coverpic")
+
+    def __str__(self) :
+        return  self.name
 

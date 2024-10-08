@@ -1,8 +1,11 @@
+// editPost section
 function editPost(id, body, page){
     document.getElementById("edit_post_id").value = id;
     document.getElementById("edit_post_body").value = body;
     document.getElementById("edit_post_page").value = page;
 }
+
+// Comment section
 function addComment(id, page){
     console.log(id)
     document.getElementById("comment_id").value = id;
@@ -43,6 +46,8 @@ function addComment(id, page){
         }
     })
 } 
+
+// Post like section
 function postLike(id){
     const like_btn = document.getElementById(`like_button${id}`);
     const likeCount = document.getElementById(`likes_count_${id}`);
@@ -62,3 +67,6 @@ function postLike(id){
 
     })
 }
+
+// Gorup section
+

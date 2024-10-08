@@ -7,7 +7,7 @@
     <main>
         <div class="main-wrapper">
             <div class="profile-banner-large bg-img"
-            " data-bg="{% if profile.cover_picture %} {{profile.cover_picture.url}} {% endif %}">
+            " data-bg="{% if group.cover_img %} {{group.cover_img.url}} {% endif %}">
             </div>
             <div class="profile-menu-area bg-white">
                 <div class="container">
@@ -16,7 +16,7 @@
                             <div class="profile-picture-box">
                                 <figure class="profile-picture">
                                     <a href="profile.html">
-                                        <img style="object-fit: cover; height:200px; width:200px;" src="{% if profile.profile_picture %} {{profile.profile_picture.url}} {% endif %}" alt="profile picture">
+                                        <img style="object-fit: cover; height:200px; width:200px;" src="{% if group.profile_img %} {{group.profile_img.url}} {% endif %}" alt="profile picture">
                                     </a>
                                 </figure>
                             </div>
@@ -59,16 +59,11 @@
                         <aside class="widget-area profile-sidebar">
                             <!-- widget single item start -->
                             <div class="card widget-item">
-                                <h4 class="widget-title">{{request.user.profile.first_name}} {{request.user.profile.last_name}}</h4>
+                                <h4 class="widget-title">{{group.name}}</h4>
                                 <div class="widget-body">
                                     <div class="about-author">
-                                        <p>I Don’t know how? But i believe that it is possible one day if i stay with my dream all time</p>
-                                        <ul class="author-into-list">
-                                            <li><a href="#"><i class="bi bi-office-bag"></i>Web Developer</a></li>
-                                            <li><a href="#"><i class="bi bi-home"></i>Melbourne, Australia</a></li>
-                                            <li><a href="#"><i class="bi bi-location-pointer"></i>Pulshar, Melbourne</a></li>
-                                            <li><a href="#"><i class="bi bi-heart-beat"></i>Travel, Swimming</a></li>
-                                        </ul>
+                                        <p>I{{group.description}}</p>
+                                        
                                     </div>
                                 </div>
                             </div>
