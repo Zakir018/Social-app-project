@@ -3,7 +3,7 @@
 <div class="card">
     <!-- post title start -->
     {% if post.group %}
-    <div class="post-title d-flex align-items-center"">
+    <div class="post-title  align-items-center"">
         <!-- Header Section -->
         <div class="d-flex justify-content-between">
           <div class="d-flex">
@@ -11,7 +11,7 @@
             <div class="position-relative mr-3">
               <img src="{% if post.group.profile_img %}{{post.group.profile_img.url}}{% endif %}" alt="Group Image" class="rounded" style="width: 50px; height: 50px;">
               <!-- User Profile Image (Positioned at the bottom-right corner of group profile) -->
-              <img src="{% if post.user.profile.profile_picture %} {{post.user.profile.profile_picture.url}} {% endif %}" alt="User Image" class="rounded-circle position-absolute" style="width: 20px; height: 20px; bottom: 0; right: 0; border: 2px solid white;">
+              <img src="{% if post.user.profile.profile_picture %} {{post.user.profile.profile_picture.url}} {% endif %}" alt="User Image" class="rounded-circle position-absolute" style="width: 30px; height: 30px; bottom: 0; right: 0; border: 2px solid white;">
             </div>
   
             <!-- Group Name and User Info -->
@@ -22,16 +22,25 @@
           </div>
   
           <!-- Menu Button (3 dots) -->
-          <div class="dropdown">
-            <button class="btn btn-link text-white p-0" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              &#8942;
-            </button>
-            <div class="dropdown-menu dropdown-menu-right bg-dark text-white" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item text-white" href="#">Edit Post</a>
-              <a class="dropdown-item text-white" href="#">Delete Post</a>
-              <a class="dropdown-item text-white" href="#">Copy Link</a>
+         <div class="post-settings-bar">
+             &#8942;
+            <div class="post-settings arrow-shape">
+                <ul>
+                    {% if post.user == request.user %}
+                        <li><button>Copy post link</button></li>
+                        <li><button  
+                            onclick="editPost('{{post.id}}', '{{post.body | escapejs}}', 'index')"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#staticBackdrop_1">
+                        Edit Post
+                        </button></li>
+                        <li><a href="{% url "delete_post" post.id "index" %}" >  Delete post</a></li>
+                        {% else %}
+                        <li><button>copy link to LazyVibes</button></li>
+                    {% endif %}
+                </ul>
             </div>
-          </div>
+        </div>
         </div>
       </div>
     {% else %}
@@ -51,9 +60,7 @@
             <span class="post-time"> {{post.created_at | timesince }} ago</span>
         </div>
         <div class="post-settings-bar">
-            <span></span>
-            <span></span>
-            <span></span>
+             &#8942;
             <div class="post-settings arrow-shape">
                 <ul>
                     {% if post.user == request.user %}
