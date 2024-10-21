@@ -248,7 +248,7 @@
                                             <!-- profile picture end -->
 
                                             <div class="posted-author">
-                                                <h6 class="author">{{friend.full_name}}</h6>
+                                                <a class="author" href='{% url "other_profile" friend.id %}' >{{friend.full_name}}</a>
                                                 <p>Many desktop publishing</p>
                                             </div>
                                         </li>
@@ -605,6 +605,10 @@
 {% include "social_app/comments.html" %}
 {% include "social_app/create_group.html" %}
 <!-- footer area end -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <!-- Modernizer JS -->
 <script src=" {% static "social_app/js/vendor/modernizr-3.6.0.min.js" %} "></script>
 <!-- jQuery JS -->

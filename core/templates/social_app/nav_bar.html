@@ -209,7 +209,7 @@
                         <div class="profile-thumb-small">
                             <a href="javascript:void(0)" class="profile-triger">
                                 <figure>
-                                    <img src="{% if profile.profile_picture %}{{profile.profile_picture.url}}{% endif %}" alt="profile picture">
+                                    <img src="{% if request.user.profile.profile_picture %}{{request.user.profile.profile_picture.url}}{% endif %}" alt="profile picture">
                                 </figure>
                             </a>
                             <div class="profile-dropdown">

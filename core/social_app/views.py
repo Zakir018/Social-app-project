@@ -77,16 +77,21 @@ def signup(request):
 
 
 def user_login(request):
+    message = ''
     if request.method == 'POST':
         username = request.POST.get('login_username')
         password = request.POST.get('login_password')
         user = authenticate(request, username=username, password=password)
+        
 
         if user:
             login(request, user)
             return  redirect('index')
+            
+        else:
+            message = 'Incorrect user name or password!'
 
-    return render(request, 'social_app/user_login.html')
+    return render(request, 'social_app/user_login.html', {'message':message} )
 
 
 def user_logout(request):
@@ -151,17 +156,16 @@ def delete_user(request):
 
 
 @login_required
-def photos(request):
-
-    return render(request, 'social_app/photos.html')
-
-
-@login_required
 def add_post(request):
     if request.method == 'POST':
+        group_id = request.POST.get('group_id', None)
+        print(group_id)
+        if group_id:
+            group = Social_group.objects.get(id=group_id)
         Post.objects.create(
             user = request.user,
             body = request.POST.get('body'),
+            group = group,
             image = request.FILES.get('image')
         )
         return redirect('index')
@@ -325,6 +329,22 @@ def edit_profile(request):
     
     return render(request, 'social_app/profiles.html',context)
 
+
+def other_profile (request, pk):
+    otheruser_profile = get_object_or_404(Profile, id=pk)
+    posts = Post.objects.filter(user= otheruser_profile.user).order_by('-created_at')
+    
+
+    print(otheruser_profile)
+
+    return render(request, 'social_app/others_profile.html', {'otheruser_profile':otheruser_profile, 'posts':posts})
+
+
+
+@login_required
+def photos(request):
+
+    return render(request, 'social_app/photos.html')
 
 @login_required
 def about(request):

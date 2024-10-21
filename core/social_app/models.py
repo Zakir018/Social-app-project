@@ -26,6 +26,7 @@ class Post(models.Model):
     body = models.CharField(max_length= 150)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
+    group = models.ForeignKey('Social_group', on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(  null=True, blank=True, upload_to='posts-img/')
 
     def is_liked_by_user(self, user):

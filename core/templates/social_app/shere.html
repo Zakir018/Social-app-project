@@ -10,6 +10,7 @@
                 </div>
                 <form enctype="multipart/form-data" method="post" action="{% url "add_post" %}">
                     {% csrf_token %}
+                    <input type="text" name="group_id" value="{{group.id}}" hidden> 
                     <div class="modal-body custom-scroll">
                         <textarea name="body" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
                         <input type="file" name="image" class="form-control" accept="image/*">

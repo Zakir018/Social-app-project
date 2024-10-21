@@ -1,6 +1,40 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 {% for post in  posts  %}
 <div class="card">
     <!-- post title start -->
+    {% if post.group %}
+    <div class="post-title d-flex align-items-center"">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between">
+          <div class="d-flex">
+            <!-- Group Profile Image -->
+            <div class="position-relative mr-3">
+              <img src="{% if post.group.profile_img %}{{post.group.profile_img.url}}{% endif %}" alt="Group Image" class="rounded" style="width: 50px; height: 50px;">
+              <!-- User Profile Image (Positioned at the bottom-right corner of group profile) -->
+              <img src="{% if post.user.profile.profile_picture %} {{post.user.profile.profile_picture.url}} {% endif %}" alt="User Image" class="rounded-circle position-absolute" style="width: 20px; height: 20px; bottom: 0; right: 0; border: 2px solid white;">
+            </div>
+  
+            <!-- Group Name and User Info -->
+            <div>
+              <div class="font-weight-bold">{{post.group.name}}</div>
+              <div class="small text-muted"> {{post.user.profile.full_name}} • {{post.created_at | timesince }} <i class="fa fa-globe"></i></div>
+            </div>
+          </div>
+  
+          <!-- Menu Button (3 dots) -->
+          <div class="dropdown">
+            <button class="btn btn-link text-white p-0" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              &#8942;
+            </button>
+            <div class="dropdown-menu dropdown-menu-right bg-dark text-white" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item text-white" href="#">Edit Post</a>
+              <a class="dropdown-item text-white" href="#">Delete Post</a>
+              <a class="dropdown-item text-white" href="#">Copy Link</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
     <div class="post-title d-flex align-items-center">
         <!-- profile picture end -->
         <div class="profile-thumb">
@@ -13,7 +47,7 @@
         <!-- profile picture end -->
 
         <div class="posted-author">
-            <h6 class="author"><a href="{% url "profile" %}"> {{post.user.profile.full_name}} </a></h6>
+            <h6 class="author"><a href="{% url "other_profile" post.user.profile.id%}"> {{post.user.profile.full_name}} {% if post.group %} - {{ post.group.name}}{% endif %} </a></h6>
             <span class="post-time"> {{post.created_at | timesince }} ago</span>
         </div>
         <div class="post-settings-bar">
@@ -22,7 +56,7 @@
             <span></span>
             <div class="post-settings arrow-shape">
                 <ul>
-                    {% if post.user == profile.user %}
+                    {% if post.user == request.user %}
                         <li><button>Copy post link</button></li>
                         <li><button  
                             onclick="editPost('{{post.id}}', '{{post.body | escapejs}}', 'index')"
@@ -32,12 +66,14 @@
                         </button></li>
                         <li><a href="{% url "delete_post" post.id "index" %}" >  Delete post</a></li>
                         {% else %}
-                        <li><button>copy link to adda</button></li>
+                        <li><button>copy link to LazyVibes</button></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </div>
+    {% endif %}
+    
     <!-- post title start -->
     <div class="post-content">
         <p class="post-desc">
@@ -74,3 +110,7 @@
     </div>
 </div>
 {% endfor %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
