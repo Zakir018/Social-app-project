@@ -16,8 +16,8 @@
   
             <!-- Group Name and User Info -->
             <div>
-              <div class="font-weight-bold">{{post.group.name}}</div>
-              <div class="small text-muted"> {{post.user.profile.full_name}} • {{post.created_at | timesince }} <i class="fa fa-globe"></i></div>
+              <div class=" font-weight-bold"><a href="{% url 'group' post.group.id %}">{{post.group.name}}</a></div>
+              <div class="author small text-muted"> <a href="{% url "other_profile" post.user.profile.id%}">{{post.user.profile.full_name}} </a> • {{post.created_at | timesince }} <i class="fa fa-globe"></i></div>
             </div>
           </div>
   

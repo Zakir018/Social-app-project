@@ -55,8 +55,7 @@
                                     <h1 class="create-acc text-center">Create An Account</h1>
                                     <div class="signup-inner text-center">
                                         <h3 class="title">Wellcome to LazyVibes</h3>
-                                        <form method="post" class="signup-inner--form">
-                                            {% csrf_token %}
+                                        <form method="post" onsubmit="UserSignup(event)" class="signup-inner--form">
                                             <p style="color: red;" >{{message}}</p>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -69,7 +68,7 @@
                                                     <input type="text" class="single-field" name="signup_lastname" placeholder="Last Name" required>
                                                 </div>
                                                 <div class="col-12">
-                                                    <input type="email" class="single-field" name="signup_email" placeholder="Email" required>
+                                                    <input type="email" class="single-field" name="signup_email" placeholder="Email" >
                                                 </div>
                                                 <div class="col-6">
                                                     <input type="password" class="single-field" name="signup_password" placeholder="Password" required>
@@ -116,7 +115,48 @@
 
     <!-- JS
 ============================================ -->
+<script>
+    function UserSignup(e){
+        e.preventDefault();
+        const signup_username = e.target.signup_username.value;
+        const signup_firstname = e.target.signup_firstname.value;
+        const signup_lastname = e.target.signup_lastname.value;
+        const signup_email = e.target.signup_email.value;
+        const signup_password = e.target.signup_password.value;
+        const signup_confirm_password = e.target.signup_confirm_password.value;
+        const gender = e.target.gender.value;
+        const age = e.target.age.value;
+        const country = e.target.country.value;
 
+        fetch('/api/user_signup/',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                signup_username: signup_username,
+                signup_firstname: signup_firstname,
+                signup_lastname: signup_lastname,
+                signup_email: signup_email,
+                signup_password: signup_password,
+                signup_confirm_password: signup_confirm_password,
+                gender: gender,
+                age: age,
+                country: country,
+            })
+        })
+        .then(response => response.json())
+        .then(data =>{
+            if (data.status == "success"){
+                window.location.href = "/user_login";
+            }
+            else{
+                    alert(data.message)
+                }
+        })
+    }
+        
+</script>
 <script src=" {% static "social_app/js/vendor/modernizr-3.6.0.min.js" %} "></script>
 <!-- jQuery JS -->
 <script src=" {% static "social_app/js/vendor/jquery-3.6.0.min.js" %} "></script>

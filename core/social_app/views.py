@@ -14,7 +14,6 @@ def index(request):
     friends = Profile.objects.all()
     posts = Post.objects.order_by('-created_at')
     groups = Social_group.objects.all()
-    print(groups)
     for post in posts:
         post.liked_by_user = post.is_liked_by_user(request.user)
         
@@ -30,68 +29,11 @@ def index(request):
 
 
 def signup(request):
-    message = ''
-    if request.method == "POST":
-        first_name =request.POST.get('signup_firstname')
-        last_name = request.POST.get('signup_lastname')
-        username = request.POST.get('signup_username')
-        email = request.POST.get('signup_email')
-        password = request.POST.get('signup_password')
-        repeat_password = request.POST.get('signup_confirm_password')
-        gender = request.POST.get('gender')
-        age = request.POST.get('age')
-        country = request.POST.get('country')
-
-        if User.objects.filter(username=username).exists():
-            message = "username already regester"
-
-        elif User.objects.filter(email=email).exists():
-            message = "email already regester"
-
-        elif len(password) < 8 :
-            message = "password must be 8 charachter long"
-
-        elif password != repeat_password :
-            message = "password and repeat password must be same"
-
-        else:
-            register_user = User.objects.create_user(
-                username=username.lower(),
-                email=email,
-                password=password,
-        )
-    
-            Profile.objects.create(
-                user = register_user,
-                first_name = first_name,
-                last_name = last_name,
-                age = age,
-                gender = gender,
-                country = country
-            )
-            register_user.save()
-            return redirect('user_login')
-            
-
-    return render(request, 'social_app/signup.html', {'message':message})
+    return render(request, 'social_app/signup.html',)
 
 
 def user_login(request):
-    message = ''
-    if request.method == 'POST':
-        username = request.POST.get('login_username')
-        password = request.POST.get('login_password')
-        user = authenticate(request, username=username, password=password)
-        
-
-        if user:
-            login(request, user)
-            return  redirect('index')
-            
-        else:
-            message = 'Incorrect user name or password!'
-
-    return render(request, 'social_app/user_login.html', {'message':message} )
+    return render(request, 'social_app/user_login.html',)
 
 
 def user_logout(request):
@@ -282,10 +224,11 @@ def create_group(request):
 
 @login_required
 def group(request, pk):
-    print(pk)
     group = get_object_or_404(Social_group, id=pk)
+    posts = Post.objects.filter(group=group).order_by('created_at')
     profile = Profile.objects.filter(user=request.user).first()
-    return render(request, 'social_app/group.html', {'group':group, 'profile':profile})
+    print(posts)
+    return render(request, 'social_app/group.html', {'group':group, 'posts':posts, 'profile':profile})
 
 @login_required
 def friends(request):

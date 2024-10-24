@@ -43,8 +43,7 @@
                             <h3 class="create-acc text-center">{{message}}</h3>
                             <div class="signup-inner text-center">
                                 <h3 class="title">Wellcome to LazyVibes</h3>
-                                <form method="post" class="signup-inner--form">
-                                    {% csrf_token %}
+                                <form method="post" onsubmit="userLogin(event)" class="signup-inner--form">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <input type="text" class="single-field" name="login_username" placeholder="Username" required>
@@ -66,6 +65,35 @@
         </div>
     </div>
     </div>
+    <script>
+        function userLogin(e) {
+            e.preventDefault();
+            console.log("login")
+            const username = e.target.login_username.value;
+            const password = e.target.login_password.value;
+            fetch('/api/user_login/', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if(data.status === "success") {
+                    window.location.href = "/";
+                }
+                else{
+                    alert(data.message)
+                }
+            })
+            .then(error => console.log(error))
+        }
+    </script>
     <script src=" {% static "social_app/js/vendor/modernizr-3.6.0.min.js" %} "></script>
     <!-- jQuery JS -->
     <script src=" {% static "social_app/js/vendor/jquery-3.6.0.min.js" %} "></script>
@@ -87,5 +115,7 @@
     <script src=" {% static "social_app/js/plugins/isotope.pkgd.min.js" %} "></script>
     <!-- Main JS -->
     <script src=" {% static "social_app/js/main.js" %}"> </script >
+
+   
 </body>
 </html>
