@@ -100,6 +100,16 @@ def delete_user(request):
 @login_required
 def add_post(request):
     if request.method == 'POST':
+        Post.objects.create(
+            user = request.user,
+            body = request.POST.get('body'),
+            image = request.FILES.get('image')
+        )
+        return redirect('index')
+    
+@login_required
+def add_group_post(request):
+    if request.method == 'POST':
         group_id = request.POST.get('group_id', None)
         print(group_id)
         if group_id:
@@ -110,7 +120,7 @@ def add_post(request):
             group = group,
             image = request.FILES.get('image')
         )
-        return redirect('index')
+        return redirect('group', group.id)
 
 
 @login_required
@@ -219,13 +229,10 @@ def create_group(request):
         group.save()
         return redirect('group', group.id )
 
-
-
-
 @login_required
 def group(request, pk):
     group = get_object_or_404(Social_group, id=pk)
-    posts = Post.objects.filter(group=group).order_by('created_at')
+    posts = Post.objects.filter(group=group).order_by('-created_at')
     profile = Profile.objects.filter(user=request.user).first()
     print(posts)
     return render(request, 'social_app/group.html', {'group':group, 'posts':posts, 'profile':profile})
@@ -255,7 +262,7 @@ def edit_profile(request):
 
         if profile_img:
             profile.profile_picture = profile_img
-        if cover_img:
+        elif cover_img:
             profile.cover_picture = cover_img
         profile.first_name = new_first_name
         profile.last_name = new_last_name

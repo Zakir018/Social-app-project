@@ -56,7 +56,7 @@
                                     <div class="signup-inner text-center">
                                         <h3 class="title">Wellcome to LazyVibes</h3>
                                         <form method="post" onsubmit="UserSignup(event)" class="signup-inner--form">
-                                            <p style="color: red;" >{{message}}</p>
+                                            <p id="show_message" style="color: red;" ></p>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="text" class="single-field" name="signup_username" placeholder="Username" required>
@@ -101,7 +101,7 @@
                                             </div>
                                         </form>
                                         <div class="col-12 p-4">
-                                            <h6 class="terms-condition">You have already account<a href="{% url "user_login" %}">Login</a></h6>
+                                            <h6 class="terms-condition">You have already account !<a href="{% url "user_login" %}"> Login</a></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -147,11 +147,12 @@
         })
         .then(response => response.json())
         .then(data =>{
+            console.log(data);
             if (data.status == "success"){
                 window.location.href = "/user_login";
             }
             else{
-                    alert(data.message)
+                document.getElementById("show_message").innerHTML = data.message
                 }
         })
     }

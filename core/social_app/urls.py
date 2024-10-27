@@ -16,6 +16,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='user_logout'),
     path('setting/', views.setting, name='setting'),
     path('posts/', views.add_post, name='add_post'),
+    path('group_posts/', views.add_group_post, name='add_group_post'),
     path('edit_post/', views.edit_post, name='edit_post'),
     path('post_like/<int:pk>/', views.post_like, name="post_like"),
     path('add_comments/', views.add_comments, name='add_comments'),

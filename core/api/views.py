@@ -20,20 +20,13 @@ class UserLoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        message = ''
-        status = ''
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            status = 'success'
             token, created = Token.objects.get_or_create(user=user)
-            print("if")
+            return Response({"status":"success", "message":"login successfully", 'token': token.key})
 
-        else:
-            status = 'unsuccess'
-            message = 'username or password incorrect'
-            print('else')
-        return Response({'status':status, 'message': message})
+        return Response({'status':"username or password incorrect", "message": "username or password incorrect"})
 
 
 class UserSignupView(APIView):
@@ -50,38 +43,35 @@ class UserSignupView(APIView):
         gender = request.data.get('gender')
         age = request.data.get('age')
         country = request.data.get('country')
-        status = ''
-        message = ''
         
 
         if User.objects.filter(username=username).exists():
-            message = "username already regester"
+            return Response({"status":"error",  "message":"username already regester"}, status=status.HTTP_400_BAD_REQUEST)
 
-        elif User.objects.filter(email=email).exists():
-            message = "email already regester"
+        if User.objects.filter(email=email).exists():
+            return Response({"status":"error",  "message":"email already regester"}, status=status.HTTP_400_BAD_REQUEST)
 
-        elif len(password) < 8 :
-            message = "password must be 8 charachter long"
+        if len(password) < 8 :
+            return Response({"status":"error",  "message":"password must be 8 charachter long"}, status=status.HTTP_400_BAD_REQUEST)
 
-        elif password != repeat_password :
-            message = "password and repeat password must be same"
-
-        else:
-            register_user = User.objects.create_user(
-                username=username.lower(),
-                email=email,
-                password=password,
+        if password != repeat_password :
+            return Response({"status":"error",  "message":"password and repeat password must be same"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        register_user = User.objects.create_user(
+            username=username.lower(),
+            email=email,
+            password=password,
         )
     
-            Profile.objects.create(
-                user = register_user,
-                first_name = first_name,
-                last_name = last_name,
-                age = age,
-                gender = gender,
-                country = country
-            )
-            register_user.save()
-            status = 'success'
+        Profile.objects.create(
+            user = register_user,
+            first_name = first_name,
+            last_name = last_name,
+            age = age,
+            gender = gender,
+            country = country
+        )
+        register_user.save()
+        token = Token.objects.create(user = register_user)
 
-        return Response({'status':status, 'message': message})
+        return Response({"status":"success", "token":token.key, 'message': "Accout created successfuly"},status=status.HTTP_201_CREATED)

@@ -40,7 +40,7 @@
                     <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
                         <div class="signup-form-wrapper">
                             <h1 class="create-acc text-center">Login An Account</h1>
-                            <h3 class="create-acc text-center">{{message}}</h3>
+                            <h3 id = "show_message" class="create-acc text-center"></h3>
                             <div class="signup-inner text-center">
                                 <h3 class="title">Wellcome to LazyVibes</h3>
                                 <form method="post" onsubmit="userLogin(event)" class="signup-inner--form">
@@ -55,7 +55,7 @@
                                             <button type="submit" class="submit-btn">Login</button>
                                         </div>
                                     </div>
-                                    <h6 class="terms-condition">Register new acount !<a href="{% url "signup" %}">Signup</a></h6>
+                                    <h6 class="terms-condition">Register new acount ! <a href="{% url "signup" %}"> Signup</a></h6>
                                 </form>
                             </div>
                         </div>
@@ -84,11 +84,11 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                if(data.status === "success") {
+                if(data.status == "success") {
                     window.location.href = "/";
                 }
                 else{
-                    alert(data.message)
+                    document.getElementById("show_message").innerHTML =  data.message;
                 }
             })
             .then(error => console.log(error))
